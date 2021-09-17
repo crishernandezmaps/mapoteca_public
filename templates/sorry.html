@@ -1,0 +1,27 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+<div class="container">
+    <header>
+        <h2><a href="https://mapoteca.cl/" target="_blank"><img id='logo' src="https://mapoteca.cl/wp-content/uploads/2020/10/rsz_mapoteca_azul.png"></a></h2>
+        <nav>
+            <a href="https://mapoteca.cl/" target="_blank"><p class="f4 pointer grow outline-0 no-underline br-pill ph4 pv2 mb2 dib white bg-red">Info</p></a>        
+        </nav>
+    </header>
+  
+    <div class="cover">
+        <p method='GET' data='data'>{{data}}</p>
+      <h1>Recomiendame un lugar para ___</h1>     
+      <form  class="flex-form" action="{{ url_for('index') }}" method="POST">
+        <label for="from">
+          <i class="ion-location"></i>
+        </label>
+        <input type="search" name="address" placeholder="Ingresa una dirección en Santiago, Chile">
+        <input type="submit" value="Buscar">
+      </form>
+      <div id="madeby">
+        <span>
+          Photo by <a href="https://unsplash.com/@max_thehuman" target="_blank">Max Böhme</a>
+        </span>
+      </div>
+    </div>
+  
+  </div>

@@ -1,0 +1,193 @@
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pilldomatch</title>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css" rel="stylesheet"/>
+<link href="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.min.css" rel="stylesheet"/>
+<link href="https://podium.github.io/podium-css/css/tachyons.css" rel="stylesheet" />
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.js"></script>
+<script src="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<div class="container">
+    <header>
+      <!-- <h2><a href="https://mapoteca.cl/" target="_blank"><img id="logo" src="{{url_for('static', filename='logo_white.png')}}" /></a></h2> -->
+      <!-- <nav>
+          <a href="https://mapoteca.cl/" target="_blank"><p class="f4 pointer grow outline-0 no-underline br-pill ph4 pv2 mb2 dib white bg-red">Info</p></a>
+      </nav> -->
+    </header>
+    <div id="map"></div>    
+  
+    <div class="cover">
+      <h1>Recomiendame un lugar ___</h1>     
+      <form  class="flex-form" action="{{ url_for('index') }}" method="POST">
+        <label for="from">
+          <i class="ion-location"></i>
+        </label>
+        <input type="search" name="address" placeholder="Ingresa una dirección en Santiago, Chile">
+        <input type="submit" value="Buscar">
+      </form>
+      <div id="madeby">
+        <span>
+          Photo by <a href="https://unsplash.com/@max_thehuman" target="_blank">Max Böhme</a>
+        </span>
+      </div>
+      <div method='GET' data='data' class="row results">        
+        <div class="info text_results">
+            <img src="https://static.wixstatic.com/media/3f4327_5d3339cfe18d497fb6323cf5a6b581f2~mv2.png/v1/fill/w_1000,h_996,al_c,q_90/Dise%C3%B1o%20sin%20t%C3%ADtulo%20(2).webp" />            
+            <!-- <h4 class="txt-m txt-bold mb6" id="bajada">Sobre esta aplicación:</h4>
+            <p>
+                Esta aplicación está creada por la empresa <a href="https://mapoteca.cl/" target="_blank" style="color: #E02B20;">Mapoteca</a>.
+                Se basa en nuestro algoritmo de recomendación de localizaciones, que procesa data pública en todas las ciudades más importantes
+                del mundo, entregando luces sobre qué y dónde convendría localizar. Esto esta genial! Pero recuerda que el conocimiento de tu
+                negocio en particular SIEMPRE es más importante, nosotros somos un <a href="https://es.wikipedia.org/wiki/Robo-advisor" target="_blank" style="color: #E02B20;">
+                roboadvisor</a> territorial solamente. Aunque poderoso ;)            
+            </p>                                       -->
+          </div>            
+          <div class="info text_results">
+            <h4 class="txt-m txt-bold mb6" id="bajada">La Mejor Farmacia es:</h4>
+            <ul>                
+                <li><span class="f2">Farmacia Popular <a href="https://api.whatsapp.com/send?phone=+56942684670"><img src="https://img.icons8.com/ios/50/000000/whatsapp--v1.png"/></a></span> </li>
+                <!-- <li><span class="f2">1. {{data[0]}}</span> </li>
+                <li><span class="f3">2. {{data[1]}}</span> </li>
+                <li><span class="f4">3. {{data[2]}}</span></li> -->
+            </ul>                     
+          </div>         
+          <div class="info">
+              <div class="absolute fl my24 mx24 py24 px24 bg-gray-faint round">
+                <form id="params">
+                  <h4 class="txt-m txt-bold mb6">Area de Cobertura:</h4>
+                  <div class="mb12 mr12 toggle-group align-center">
+                    <label class="toggle-container">
+                      <input name="profile" type="radio" value="walking" />
+                      <div class="toggle toggle--active-null toggle--null">Caminar</div>
+                    </label>
+                    <label class="toggle-container">
+                      <input name="profile" type="radio" value="cycling" checked />
+                      <div class="toggle toggle--active-null toggle--null">Bicicleta</div>
+                    </label>
+                    <label class="toggle-container">
+                      <input name="profile" type="radio" value="driving" />
+                      <div class="toggle toggle--active-null toggle--null">Automóvil</div>
+                    </label>
+                  </div>
+                  <h4 class="txt-m txt-bold mb6">Choose a maximum duration:</h4>
+                  <div class="mb12 mr12 toggle-group align-center">
+                    <label class="toggle-container">
+                      <input name="duration" type="radio" value="10" checked />
+                      <div class="toggle toggle--active-null toggle--null">10 min</div>
+                    </label>
+                    <label class="toggle-container">
+                      <input name="duration" type="radio" value="20" />
+                      <div class="toggle toggle--active-null toggle--null">20 min</div>
+                    </label>
+                    <label class="toggle-container">
+                      <input name="duration" type="radio" value="30" />
+                      <div class="toggle toggle--active-null toggle--null">30 min</div>
+                    </label>
+                  </div>
+                </form>
+              </div>              
+          </div>
+        </div>       
+    </div>     
+  </div>
+  <script>
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiY3Jpc2hlcm5hbmRlem1hcHMiLCJhIjoiY2tvYTRqYTVoMm5mejJwcXdta3UyZzI1byJ9.pqKQkOPvqB-1gmuTdkYzQg';
+
+var map = new mapboxgl.Map({
+  container: 'map', // container id
+  style: 'mapbox://styles/crishernandezmaps/ckpj6ui6j2lz517qq7r4r3ilf', // stylesheet
+  center: [-70.663717,-33.447133], // starting position [lng, lat]
+  zoom: 11.5 // starting zoom
+});
+
+// Target the params form in the HTML
+var params = document.getElementById('params');
+// FROM FLASK
+var lon__ = '{{latlon["Longitude"]}}'
+var lat__ = '{{latlon["Latitude"]}}'
+// Create variables to use in getIso()
+var urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+var lon = lon__;
+var lat = lat__;
+var profile = 'cycling';
+var minutes = 5;
+
+// Set up a marker that you can use to show the query's coordinates
+var marker = new mapboxgl.Marker({
+  'color': 'tomato'
+});
+
+// Create a LngLat object to use in the marker initialization
+// https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
+var lngLat = {
+  lon: lon,
+  lat: lat
+};
+
+// Create a function that sets up the Isochrone API query then makes an Ajax call
+function getIso() {
+  var query =
+    urlBase +
+    profile +
+    '/' +
+    lon +
+    ',' +
+    lat +
+    '?contours_minutes=' +
+    minutes +
+    '&polygons=true&access_token=' +
+    mapboxgl.accessToken;
+
+  $.ajax({
+    method: 'GET',
+    url: query
+  }).done(function (data) {
+    // Set the 'iso' source's data to what's returned by the API query
+    map.getSource('iso').setData(data);
+  });
+}
+
+// When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again
+params.addEventListener('change', function (e) {
+  if (e.target.name === 'profile') {
+    profile = e.target.value;
+    getIso();
+  } else if (e.target.name === 'duration') {
+    minutes = (e.target.value)/2;
+    getIso();
+  }
+});
+
+map.on('load', function () {
+  // When the map loads, add the source and layer
+  map.addSource('iso', {
+    type: 'geojson',
+    data: {
+      'type': 'FeatureCollection',
+      'features': []
+    }
+  });
+
+  map.addLayer(
+    {
+      'id': 'isoLayer',
+      'type': 'fill',
+      'source': 'iso',
+      'layout': {},
+      'paint': {
+        'fill-color': 'yellow',
+        'fill-opacity': 0.3
+      }
+    },
+    'poi-label'
+  );
+
+  // Initialize the marker at the query coordinates
+  marker.setLngLat(lngLat).addTo(map);
+
+  // Make the API call
+  getIso();
+});
+    
+  </script>
