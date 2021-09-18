@@ -7,6 +7,7 @@ body{
   padding: 0;
   display: flex;
   height: 100vh;
+  width: 100vw;
   align-items: center;
   justify-content: center;
   background:#fff;
@@ -73,10 +74,24 @@ span a:after{
 span a:hover{
   transform: translateZ(-25px) rotateX(-90deg);
 }
+.child {
+    width: 100vw;
+    height:200px;
+    margin:20px;
+}
+body > img {
+    position: absolute;
+    top: 0%;
+    width: 40%;
+    height: auto;
+}
 </style>
 <body>
-    <span><a class="scl" href="{{url_for('fscl')}}"></a></span>
-    <span><a class="lim" href="{{url_for('flim')}}"></a></span>
-    <span><a class="bog" href="{{url_for('fbog')}}"></a></span>
-    <span><a class="mex" href="{{url_for('fmex')}}"></a></span>
+    <img src="{{url_for('static', filename='mapoteca_logo_h.svg')}}" />    
+    <div class="child">
+        <span><a class="scl" href="{{url_for('fscl')}}"></a></span>
+        <span><a class="lim" href="{{url_for('flim')}}"></a></span>
+        <span><a class="bog" href="{{url_for('fbog')}}"></a></span>
+        <span><a class="mex" href="{{url_for('fmex')}}"></a></span>
+    </div>
 </body>
